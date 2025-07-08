@@ -40,7 +40,7 @@ func main() {
 	e.Use(middleware.CORS())
 
 	// Serve static files
-	e.Static("/", "../frontend")
+	e.Static("/", "./frontend")
 
 	// API Routes
 	api := e.Group("/api")
