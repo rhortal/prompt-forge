@@ -34,6 +34,10 @@ func (s *OpenAIService) CallAzureOpenAI(messages []models.Message, temperature f
 		Temperature: temperature,
 	}
 
+	// Initialize both to 0 to ensure only the relevant one is set
+	requestBody.MaxTokens = 0
+	requestBody.MaxCompletionTokens = 0
+
 	if maxTokens > 0 {
 		// o3 model uses max_completion_tokens instead of max_tokens
 		if model == "o3" {

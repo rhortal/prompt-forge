@@ -57,14 +57,28 @@ func (s *UnifiedAIService) callOpenAI(messages []models.Message, temperature flo
 		model = "gpt-4"
 	}
 
+	// o3 model only supports temperature = 1
+	if model == "o3" {
+		temperature = 1
+	}
+
 	requestBody := models.OpenAIRequest{
 		Model:       model,
 		Messages:    messages,
 		Temperature: temperature,
 	}
 
+	// Initialize both to 0 to ensure only the relevant one is set
+	requestBody.MaxTokens = 0
+	requestBody.MaxCompletionTokens = 0
+
 	if maxTokens > 0 {
-		requestBody.MaxTokens = maxTokens
+		// o3 model uses max_completion_tokens instead of max_tokens
+		if model == "o3" {
+			requestBody.MaxCompletionTokens = maxTokens
+		} else {
+			requestBody.MaxTokens = maxTokens
+		}
 	}
 
 	jsonData, err := json.Marshal(requestBody)

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/joho/godotenv" // Added godotenv import
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 
@@ -14,6 +15,13 @@ import (
 )
 
 func main() {
+	// Load .env file
+	// Assuming .env is in the project root, one level up from the api directory
+	err := godotenv.Load("../.env")
+	if err != nil {
+		fmt.Printf("Error loading .env file: %v\n", err)
+	}
+
 	// Initialize configuration
 	config.InitConfig()
 
@@ -40,7 +48,8 @@ func main() {
 	e.Use(middleware.CORS())
 
 	// Serve static files
-	e.Static("/", "./frontend")
+	// Assuming frontend is in the project root, one level up from the api directory
+	e.Static("/", "../frontend")
 
 	// API Routes
 	api := e.Group("/api")
