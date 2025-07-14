@@ -100,3 +100,7 @@ temp/
 *.backup
 *.old
 *.orig 
+
+#Git stuff
+.git
+.git_local_repo_credentials
