@@ -16,10 +16,18 @@ import (
 
 func main() {
 	// Load .env file
-	// Assuming .env is in the project root, one level up from the api directory
-	err := godotenv.Load("../.env")
+	// Try loading from current directory (for Docker) or one level up (for local)
+	err := godotenv.Load("./.env")
 	if err != nil {
-		fmt.Printf("Error loading .env file: %v\n", err)
+		// If not found in current, try one level up
+		err = godotenv.Load("../.env")
+		if err != nil {
+			fmt.Printf("Error loading .env file from both locations: %v\n", err)
+		} else {
+			fmt.Printf("Successfully loaded .env from ../.env\n")
+		}
+	} else {
+		fmt.Printf("Successfully loaded .env from ./.env\n")
 	}
 
 	// Initialize configuration
@@ -49,7 +57,7 @@ func main() {
 
 	// Serve static files
 	// Assuming frontend is in the project root, one level up from the api directory
-	e.Static("/", "../frontend")
+	e.Static("/", "./frontend")
 
 	// API Routes
 	api := e.Group("/api")

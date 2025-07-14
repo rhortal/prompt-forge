@@ -31,6 +31,7 @@ WORKDIR /root/
 
 # Copy the binary from builder stage
 COPY --from=builder /app/main .
+COPY .env .
 
 # Copy frontend files
 COPY frontend/ ./frontend/

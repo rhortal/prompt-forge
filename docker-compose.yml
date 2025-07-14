@@ -2,10 +2,13 @@ version: '3.8'
 
 services:
   promptforge:
-    image: ghcr.io/insaanimanav/prompt-forge:main
+    # image: ghcr.io/insaanimanav/prompt-forge:main
+    image: promptforge-mine
     container_name: promptforge
     ports:
       - "8080:8080"
+    env_file:
+      - .env
     environment:
       # Anthropic API (Default)
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
